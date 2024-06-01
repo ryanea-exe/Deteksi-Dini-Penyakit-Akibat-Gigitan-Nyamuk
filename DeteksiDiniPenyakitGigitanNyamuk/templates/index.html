@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prediksi Penyakit Nyamuk</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        header {
+            padding: 10px;
+            background-color: black;
+            color: white;
+            text-align: center;
+        }
+        .resultContainer {
+            text-align: center;
+            margin-top: 20px; 
+        }
+        footer {
+            background-color:  black;
+            padding: 10px;
+            margin: 0;
+            text-align: center;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h2>Deteksi Dini Penyakit Akibat Gigitan Nyamuk</h2>
+        <h2>(Demam Berdarah, Malaria, Chikungunya)</h2>
+    </header>
+
+<div class="container mt-5">
+    <h2 class="mb-4">Input Data Gejala Untuk Deteksi Penyakit</h2>
+
+    <form action="{{ url_for('predict') }}" method="post">
+        <div class="form-row">
+            <div class="form-group col-md-4">
+                <label for="SUHU_TUBUH">Suhu Tubuh (°C):</label>
+                <input type="float" class="form-control" id="SUHU_TUBUH" name="SUHU_TUBUH" required>
+            </div>
+            <div class="form-group col-md-4">
+                <label for="TROMBOSIT">Trombosit:</label>
+                <input type="number" class="form-control" id="TROMBOSIT" name="TROMBOSIT" required>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="riwayat_kesehatan">Riwayat Kesehatan:</label><br>
+            <div class="form-check form-check-inline">
+                <input type="radio" class="form-check-input" id="RIWAYAT_KESEHATAN_YA" name="RIWAYAT_KESEHATAN" value="1" required>
+                <label class="form-check-label" for="RIWAYAT_KESEHATAN_YA">Yes</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input type="radio" class="form-check-input" id="RIWAYAT_KESEHATAN_TIDAK" name="RIWAYAT_KESEHATAN" value="0" required>
+                <label class="form-check-label" for="RIWAYAT_KESEHATAN_TIDAK">No</label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="MENGGIGIL">Menggigil:</label><br>
+            <div class="form-check form-check-inline">
+                <input type="radio" class="form-check-input" id="MENGGIGIL_YA" name="MENGGIGIL" value="1" required>
+                <label class="form-check-label" for="MENGGIGIL_YA">Yes</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input type="radio" class="form-check-input" id="MENGGIGIL_TIDAK" name="MENGGIGIL" value="0" required>
+                <label class="form-check-label" for="MENGGIGIL_TIDAK">No</label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="DEMAM">Demam:</label><br>
+            <div class="form-check form-check-inline">
+                <input type="radio" class="form-check-input" id="DEMAM_YA" name="DEMAM" value="1" required>
+                <label class="form-check-label" for="DEMAM_YA">Yes</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input type="radio" class="form-check-input" id="DEMAM_TIDAK" name="DEMAM" value="0" required>
+                <label class="form-check-label" for="DEMAM_TIDAK">No</label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="MUAL">Mual:</label><br>
+            <div class="form-check form-check-inline">
+                <input type="radio" class="form-check-input" id="MUAL_YA" name="MUAL" value="1" required>
+                <label class="form-check-label" for="MUAL_YA">Yes</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input type="radio" class="form-check-input" id="MUAL_TIDAK" name="MUAL" value="0" required>
+                <label class="form-check-label" for="MUAL_TIDAK">No</label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="RUAM">Ruam:</label><br>
+            <div class="form-check form-check-inline">
+                <input type="radio" class="form-check-input" id="RUAM_YA" name="RUAM" value="1" required>
+                <label class="form-check-label" for="RUAM_YA">Yes</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input type="radio" class="form-check-input" id="RUAM_TIDAK" name="RUAM" value="0" required>
+                <label class="form-check-label" for="RUAM_TIDAK">No</label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="NYERI_SENDI">Nyeri Sendi:</label><br>
+            <div class="form-check form-check-inline">
+                <input type="radio" class="form-check-input" id="NYERI_SENDI_YA" name="NYERI_SENDI" value="1" required>
+                <label class="form-check-label" for="NYERI_SENDI_YA">Yes</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input type="radio" class="form-check-input" id="NYERI_SENDI_TIDAK" name="NYERI_SENDI" value="0" required>
+                <label class="form-check-label" for="NYERI_SENDI_TIDAK">No</label>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Predict Now</button>
+    </form>
+</div>
+
+<div class="resultContainer">
+    {% if result %}
+        <h2>Hasil Prediksi Penyakit Anda : {{ result }}</h2>
+    {% endif %}
+</div>
+
+<footer>
+    Project Deteksi Dini Penyakit Akibat Gigitan Nyamuk By @ryanea__
+</footer>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var resultContainer = document.getElementById('resultContainer');
+        if (resultContainer) {
+            resultContainer.style.display = 'none';
+        }
+    });
+</script>
+
+<!-- Bootstrap JS and Popper.js -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+</html>
